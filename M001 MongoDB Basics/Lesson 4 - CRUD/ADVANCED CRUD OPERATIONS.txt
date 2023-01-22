@@ -1,5 +1,57 @@
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 Lab: Comparison Operators Exercise 1
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 - use sample_training
 - db.trips.find({ "birth year": { "$gt": 1998 }}).count()
 - db.trips.find({ "birth year": 1998 }).count()
 
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Lab: Comparison Operators Exercise 2
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+- db.routes_sample.find({ "stops": { "$gt": 0 }}).pretty()
+- db.routes_sample.find({ "stops": { "$gte": 0 }}).pretty()
+- db.routes_sample.find({ "stops": { "$ne": 0 }}).pretty()
+- db.routes_sample.find({ "stops": { "$lt": 0 }}).pretty()
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Lesson 4: Quiz
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Question 2.
+
+db.inspections.find(
+  { "$or": [ { "date": "Feb 20 2015" },
+             { "date": "Feb 21 2015" } ],
+    "sector": { "$ne": "Cigarette Retail Dealer - 127" }}).pretty()
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Question 3
+$ signifies that you are looking at the value of that field rather than the field name
+$ denotes an operator.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Question 4
+A.
+Correct.
+We have to use the $expr operator to compare the two field values within each document. Using the $expr operator is the reason why we have to use the aggregation syntax for the comparison operator.
+B
+Correct.
+When we swap the compared fields and use the $lt less than operator instead of the $gt greater than operator, the result should still be correct.
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Question 5
+D. 
+
+db.listingsAndReviews.find(
+  { "amenities":
+      { "$all": [ "Free parking on premises", "Wifi", "Air conditioning" ] }, 
+     "bedrooms": { "$gte":  2 } } ).pretty()
+
+Correct.
+We have to use the $all array operator In order to get all documents where the amenities array contains these three elements regardless of their order. To get the desired number of bedrooms the best operator to use is $gte, since it includes 2, but also shows other listings with more bedrooms.
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Question 6
+AirTo reach the first element in an array field we need to use dot notation and the element's position which is zero for the first element in most arrays in most languages. For the projection part, we don't need to explicitly exclude the _id field because the question prompt isn't terribly strict about that.
+
+db.listingsAndReviews.find({ "amenities.0": "Internet" },
+                           { "name": 1, "address": 1 }).pretty()
