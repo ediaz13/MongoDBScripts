@@ -1,0 +1,101 @@
+// we will use 1 as the minimum value and 10 as the maximum value for scaling, so all scaled votes will fall into the range [1,10]
+scaled_votes = 1 + 9 * ((x - x_min) / (x_max - x_min))
+
+var x_max = 1521105
+var x_min = 5
+var min = 1
+var max = 9
+x = imdb.votes
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+  $add: [
+    min,
+    {
+      $multiply: [
+        max,
+        {
+          $divide: [
+            { $subtract: [<x>, <x_min>] },
+            { $subtract: [<x_max>, <x_min>] }
+          ]
+        }
+      ]
+    }
+  ]
+}
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+[
+  {
+    $match: {
+      year: { $gte: 1990 },
+      languages: { $in: ["English"] },
+      "imdb.votes": { $gte: 1 },
+      "imdb.rating": { $gte: 1 }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      title: 1,
+      "imdb.rating": 1,
+      "imdb.votes": 1,
+      normalized_rating: {
+        $avg: [
+          "$imdb.rating",
+          {
+            $add: [
+              min,
+              {
+                $multiply: [
+                  max,
+                  {
+                    $divide: [
+                      { $subtract: [x, x_min] },
+                      { $subtract: [x_max, x_min] }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  { $sort: { normalized_rating: -1 } },
+  { $limit: 1 }
+]
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+db.movies_sample.aggregate(pipeline)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+B. The Heat
+B. The Christmas Tree
+
+
+
+
+9.910,30
+
+
+Marzo 2019
+$5113 
+La UVA valia 33.13
+154
+
+Abril
+8296.34
+34.32
+241 uvas
+
+Mayo
+
+
+149 UVAS + 55 Impuestos = 205 UVAs
+UVA = 199.32
+204.46 uvas Enero23 
