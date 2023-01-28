@@ -1,0 +1,28 @@
+{
+  $match: {
+    title: { $type: "string" }
+  }
+}
+
+
+{
+  $project: {
+    title: { $split: ["$title", " "] },
+    _id: 0
+  }
+}
+
+
+var pipeline = [
+  {
+    $match: {
+      title: { $type: "string" }
+    }
+  },
+  {
+    $project: {
+      title: { $split: ["$title", " "] },
+      _id: 0
+    }
+  }
+]

@@ -1,0 +1,32 @@
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+db.movies_sample.findOne()
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+var pipeline = [ { $match: { ... } } ]
+
+db.movies_sample.aggregate(pipeline)
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+e.g
+db.articles.aggregate( [
+  { $match: { $or: [ { score: { $gt: 70, $lt: 90 } }, { views: { $gte: 1000 } } ] } },
+  { $group: { _id: null, count: { $sum: 1 } } }
+] );
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Solution
+
+  var pipeline = [
+    {
+      $match: {
+        "imdb.rating": { $gte: 7 },
+        genres: { $nin: [ "Crime", "Horror" ] } ,
+        rated: { $in: ["PG", "G" ] },
+        languages: { $all: [ "English", "Japanese" ] }
+      }
+    }
+  ]
+
+db.movies_sample.aggregate(pipeline).itcount()

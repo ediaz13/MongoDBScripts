@@ -1,0 +1,81 @@
+Notes:
+- Take performance course!
+- Take Data Modeling Course!
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Lab: Aggregation Framework - agg_quiz
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+- use sample_training
+- db.trips.find(
+  { "birth year": { "$ne":"" } },
+  { "birth year": 1 }
+  ).sort({ "birth year": -1 }).limit(1)
+  
+  
+  
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+Lab: sort() and limit() - sort_limit_exercise
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+- use sample_airbnb
+- db.listingsAndReviews_sample.aggregate(
+  [
+    { "$group": { "_id": "$room_type" } }
+  ])
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+Quiz
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+QUESTION 1- What are the differences between using aggregate() and find()?  (Select all that apply.)
+
+A
+aggregate() can do what find() can and more.Your Answer 
+Any find() query can be translated into an aggregation pipeline equivalent, but not every aggregation pipeline can be translated into a find() query.
+
+D
+aggregate() allows us to compute and reshape data in the cursor.Your Answer 
+The aggregation framework allows us to compute and reshape data via using stages like $group, $sum, and others
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+QUESTION 2
+Which of the following commands will return the name and founding year for the 5 oldest companies in the sample_training.companies collection? (Select all that apply.)
+
+MAAAL!
+A
+db.companies.find({ "name": 1, "founded_year": 1 }
+                  ).sort({ "founded_year": 1 }).limit(5)
+				  
+				  
+It looks like the query filter has the values that the projection part of the find() command should have, and there is no projection used in this command. So this command will return all companies where the name is equal to 1 and the founded_year is also equal to 1, which unfortunately misses the requirements of the question prompt.				 
+
+BIEN!
+B
+db.companies.find({ "founded_year": { "$ne": null }},
+                  { "name": 1, "founded_year": 1 }
+                 ).sort({ "founded_year": 1 }).limit(5)
+
+We first must filter out the documents where the founded year is not null, then project the fields that we are looking for, which is name, and founded_year in this case. Then we sort the cursor in increasing order, so the first results will have the smallest value for the founded_year field. Finally, we limit the results to our top 5 documents in the cursor, thus getting the 5 oldest companies in this collection.
+
+C
+db.companies.find({ "founded_year": { "$ne": null }},
+                  { "name": 1, "founded_year": 1 }
+                 ).limit(5).sort({ "founded_year": 1 })
+				 
+While the limit() and sort() methods are not listed in the correct order, MongoDB flips their order when executing the query, delivering the results that the question prompt is looking for.
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+QUESTION 3
+
+Jameela often queries the sample_training.routes collection by the src_airport field like this:
+
+db.routes.find({ "src_airport": "MUC" }).pretty()
+Which command will create an index that will support this query? (Select one.)
+
+A- db.routes.createIndex({ "src_airport": -1 })
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+QUESTION 4
+
+What is data modeling? (Select one.)
+
+B. a way to organize fields in a document to support your application performance and querying capabilities
