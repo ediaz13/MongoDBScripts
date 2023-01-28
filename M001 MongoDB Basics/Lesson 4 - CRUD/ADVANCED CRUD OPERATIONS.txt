@@ -55,3 +55,6 @@ AirTo reach the first element in an array field we need to use dot notation and 
 
 db.listingsAndReviews.find({ "amenities.0": "Internet" },
                            { "name": 1, "address": 1 }).pretty()
+						   
+						   
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
